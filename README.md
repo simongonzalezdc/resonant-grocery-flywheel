@@ -7,7 +7,7 @@ personally approve. It tracks what you bought, notices what you've used,
 flags what's going stale, and drafts the next cart — **you** say yes.
 
 The engine is [grocery-flywheel](https://github.com/simongonzalezdc/grocery-flywheel)
-(MIT, upstream HEAD `82da650`), vendored byte-identical under `vendor/` and
+(MIT, vendored files sha256-pinned (VENDOR-PINS.json)), vendored byte-identical under `vendor/` and
 wrapped by a thin local service. The wrapper adds no dependencies: Python 3.10+
 standard library only. No accounts, no cloud, no telemetry.
 
@@ -75,7 +75,7 @@ subprocesses, and exits with code 78 if the port cannot be bound.
     sh run-validator-check.sh <path-to-2.0.0-alpha-clone>  # manifest vs the real validator
     cd vendor && PYTHONPATH=. python3 -m pytest tests/ -q   # upstream suite, unmodified (188 tests)
 
-`vendor/` is hash-pinned against upstream HEAD `82da650`: the wrapper suite
+`vendor/` is hash-pinned against vendored files sha256-pinned (VENDOR-PINS.json): the wrapper suite
 fails loudly if any vendored engine file, vendored upstream test, or vendored
 example drifts by a single byte. The vendored upstream suite is upstream's own
 tests unmodified, minus `test_quickstart.py` (it shells out to installed
