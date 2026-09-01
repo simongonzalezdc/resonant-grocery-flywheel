@@ -1,5 +1,0 @@
-store,order_date,id,name,quantity,size,spend,category,role,notes
-Example Grocery,2026-05-20,1,Espresso bricks,2,10 oz,13.84,coffee,coffee,Recurring shelf-stable coffee
-Example Grocery,2026-05-20,2,Dish soap,1,28 fl oz,4.99,cleaning_supply,critical_household_essential,Household consumable
-Example Grocery,2026-05-20,3,Calrose rice,1,20 lb,19.80,dry_good,pantry_base,Bulk pantry base
-Example Grocery,2026-05-20,4,Mystery frozen meal,1,unknown,4.25,frozen_meal,bridge_food,Unknown size
