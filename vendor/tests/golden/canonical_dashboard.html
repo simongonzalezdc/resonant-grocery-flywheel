@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grocery Flywheel Dashboard</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0e1210;
+      --panel: #161d19;
+      --panel-edge: #243029;
+      --ink: #e6ece7;
+      --muted: #8fa398;
+      --green: #4ade80;
+      --green-dim: #2f7d5c;
+      --blue: #7ab8e8;
+      --gold: #e8b04b;
+      --red: #f87171;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(1200px 500px at 20% -10%, #16211b 0%, transparent 60%),
+        var(--bg);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+    main { max-width: 1180px; margin: 0 auto; padding: 28px; }
+    header { display: grid; gap: 10px; margin-bottom: 22px; }
+    h1, h2 { margin: 0; }
+    h1 { font-size: clamp(1.8rem, 5vw, 3.4rem); line-height: .95; letter-spacing: .01em; }
+    h2 { font-size: .78rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-edge);
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 1px 0 rgba(0,0,0,.35);
+    }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-12 { grid-column: span 12; }
+    .metric { font-size: 1.9rem; font-weight: 750; margin-top: 6px; }
+    .muted { color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { border-bottom: 1px solid var(--panel-edge); padding: 9px 8px; text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+    .bar { height: 10px; background: #0b0f0d; border-radius: 999px; overflow: hidden; min-width: 80px; }
+    .bar > span { display: block; height: 100%; background: var(--green-dim); }
+    .tag {
+      display: inline-block; border: 1px solid var(--panel-edge); border-radius: 999px;
+      padding: 3px 9px; margin: 3px 4px 3px 0; font-size: .8rem;
+    }
+    .tag.critical { border-color: var(--red); color: var(--red); }
+    .tag.review { border-color: var(--gold); color: var(--gold); }
+    .tag.ok { border-color: var(--green); color: var(--green); }
+    .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .wow { border-left: 3px solid var(--green); }
+    .approve-note { color: var(--gold); }
+    button.correction {
+      background: #1d251f; border: 1px solid var(--panel-edge); color: var(--ink);
+      border-radius: 6px; padding: 4px 8px; font-size: .78rem; cursor: pointer;
+    }
+    button.correction:hover { border-color: var(--green); }
+    details { margin: 4px 0; }
+    summary { cursor: pointer; color: var(--muted); font-size: .85rem; }
+    @media (max-width: 760px) {
+      main { padding: 16px; }
+      .span-4, .span-6, .card-row { grid-column: span 12; }
+      .card-row { grid-template-columns: 1fr; }
+      table { font-size: .82rem; }
+    }
+</style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="muted">Local-first household replenishment — command center</p>
+      <h1>Grocery Flywheel</h1>
+      <p>Home groceries via retailer_history_import. Example Grocery run from 2026-05-20, analyzed as of 2026-05-26.</p>
+    </header>
+    <section class="grid">
+      
+      <article class="panel span-12 wow">
+        <h2>First Look</h2>
+        <div class="card-row">
+          <div><h2>Potential Unit Savings</h2><div class="metric">$0.00</div></div>
+          <div><h2>Best Sourcing Move</h2><div class="metric" style="font-size:1.1rem">No sourcing move yet</div></div>
+          <div><h2>Runway</h2><div class="metric" style="font-size:1.1rem">Not enough depletion data</div></div>
+        </div>
+        <p class="muted">Runway and sourcing baseline are ready</p>
+      </article>
+      
+      <article class="panel span-12">
+        <div class="card-row">
+          <div><h2>Known Depletion</h2><div class="metric">$0.00</div>
+            <p class="muted">0.0% of order value observed consumed.</p></div>
+          <div><h2>Runway</h2><div class="metric" style="font-size:1.3rem">Not enough depletion data</div>
+            <p class="muted">Estimate is based on observed depletion, not a full pantry audit.</p></div>
+          <div><h2>Order Total</h2><div class="metric">$65.75</div>
+            <p class="muted">6 elapsed day(s).</p></div>
+        </div>
+      </article>
+      <article class='panel span-6'><h2>Role Summary</h2><table><thead><tr><th>Role</th><th>Spend</th><th>Consumed</th><th>Drawdown</th></tr></thead><tbody><tr><td>bridge_food</td><td>$8.75</td><td>$0.00</td><td><div class='bar' aria-label='0% consumed'><span style='width:0%'></span></div></td></tr>
+<tr><td>coffee</td><td>$13.84</td><td>$0.00</td><td><div class='bar' aria-label='0% consumed'><span style='width:0%'></span></div></td></tr>
+<tr><td>critical_household_essential</td><td>$4.99</td><td>$0.00</td><td><div class='bar' aria-label='0% consumed'><span style='width:0%'></span></div></td></tr>
+<tr><td>drink</td><td>$6.49</td><td>$0.00</td><td><div class='bar' aria-label='0% consumed'><span style='width:0%'></span></div></td></tr>
+<tr><td>pantry_base</td><td>$19.80</td><td>$0.00</td><td><div class='bar' aria-label='0% consumed'><span style='width:0%'></span></div></td></tr></tbody></table></article>
+      <article class='panel span-6'><h2>Preference Signals</h2><p><strong>wrong_format:diced microwave chicken</strong><br>wrong_format<br><span class='muted'>Avoid the same form factor; preserve the broader protein/category need.</span></p></article>
+      <article class='panel span-6'><h2>Dietary Restrictions</h2><p><span class='tag'>Household default</span></p><p><span class='tag critical'>blocked: 1</span><span class='tag review'>needs_review: 4</span><span class='tag ok'>safe: 1</span><span class='tag ok'>warn: 6</span></p><p class='muted'>Flagged for review: Cafe Bustelo bricks, Calrose rice, Dish soap, Mystery frozen meal, Peanut granola bars</p></article>
+      <article class='panel span-6'><h2>Easy Food</h2><p class='muted'>No unopened top-ups in the easy-food window.</p></article>
+      <article class='panel span-12'><h2>Data Freshness</h2><p>0 priced recently, 6 unpriced or stale.</p><p><strong>Flagged items:</strong> Cafe Bustelo bricks (no check date, priced but stale), Dish soap (no check date, priced but stale), Calrose rice (no check date, priced but stale), Chocolate protein milk (no check date, priced but stale), Peanut granola bars (no check date, priced but stale), Mystery frozen meal (no check date, priced but stale)</p></article>
+      <article class='panel span-6'><h2>Trip Overhead</h2><p class='muted'>No visits recorded yet. Use <code>capture-visit</code> to log a trip.</p></article>
+      <article class='panel span-6'><h2>Internal Cart Plan</h2><p class='approve-note'>Everything needs your approval. No checkout surface exists.</p><p class='muted'>No cart plan yet — add sourcing research or deplete items.</p></article>
+      <article class='panel span-12'><h2>Items</h2><table><thead><tr><th>Item</th><th>Role</th><th>Category</th><th>Spend</th><th>Consumed</th><th>Notes</th><th>Evidence</th></tr></thead><tbody><tr><td>Cafe Bustelo bricks</td><td>coffee</td><td>coffee</td><td>$13.84</td><td>0%</td><td>Recurring shelf-stable coffee.</td><td><span class='muted'>none</span></td></tr>
+<tr><td>Dish soap</td><td>critical_household_essential</td><td>cleaning_supply</td><td>$4.99</td><td>0%</td><td>Household consumable.</td><td><span class='muted'>none</span></td></tr>
+<tr><td>Calrose rice</td><td>pantry_base</td><td>dry_good</td><td>$19.80</td><td>0%</td><td>Bulk pantry base.</td><td><span class='muted'>none</span></td></tr>
+<tr><td>Chocolate protein milk</td><td>drink</td><td>ready_drink</td><td>$6.49</td><td>0%</td><td>Required ready protein drink.</td><td><details><summary>ingredient_label · example package · 2026-05-26</summary><p class='muted'>milk, cocoa, contains milk</p></details></td></tr>
+<tr><td>Peanut granola bars</td><td>bridge_food</td><td>snack</td><td>$4.50</td><td>0%</td><td>Test dietary blocking.</td><td><details><summary>allergen_statement · example package · 2026-05-26</summary><p class='muted'>oats, peanut butter, contains peanuts</p></details></td></tr>
+<tr><td>Mystery frozen meal</td><td>bridge_food</td><td>frozen_meal</td><td>$4.25</td><td>0%</td><td>Unknown size and no evidence should lower confidence.</td><td><span class='muted'>none</span></td></tr></tbody></table></article>
+      <article class='panel span-6'><h2>Substitutions</h2><p class='muted'>No substitution candidates yet.</p></article>
+      <article class='panel span-6'><h2>Sourcing Research</h2><p class='muted'>No sourcing research yet.</p></article>
+      
+      <article class="panel span-12" id="corrections">
+        <h2>Correction Capture</h2>
+        <p class="muted">Record durable signals — kept local, appended to a JSONL file you download. Nothing is sent anywhere.</p>
+        <p><select id="correction-item"><option>Cafe Bustelo bricks</option><option>Dish soap</option><option>Calrose rice</option><option>Chocolate protein milk</option><option>Peanut granola bars</option><option>Mystery frozen meal</option></select></p>
+        <p><button class='correction' data-signal='never_again' onclick="capture('never_again')">never again</button><button class='correction' data-signal='buy_elsewhere' onclick="capture('buy_elsewhere')">buy elsewhere</button><button class='correction' data-signal='wrong_format' onclick="capture('wrong_format')">wrong format</button><button class='correction' data-signal='too_expensive' onclick="capture('too_expensive')">too expensive</button><button class='correction' data-signal='good_default' onclick="capture('good_default')">good default</button><button class='correction' data-signal='emergency_only' onclick="capture('emergency_only')">emergency only</button></p>
+        <p><a id="correction-download" download="corrections.jsonl"><button class="correction">Download JSONL</button></a>
+        <span class="muted" id="correction-count"></span></p>
+        <script>
+          var log = [];
+          function capture(signal) {
+            var item = document.getElementById("correction-item").value;
+            log.push({"item": item, "signal": signal, "created_at": new Date().toISOString().slice(0, 10)});
+            document.getElementById("correction-count").textContent = log.length + " captured";
+          }
+          document.getElementById("correction-download").addEventListener("click", function () {
+            var blob = new Blob([log.map(function (e) { return JSON.stringify(e); }).join("\n")], {type: "application/jsonl"});
+            this.href = URL.createObjectURL(blob);
+          });
+          var _state = {"items": ["Cafe Bustelo bricks", "Dish soap", "Calrose rice", "Chocolate protein milk", "Peanut granola bars", "Mystery frozen meal"]};
+        </script>
+      </article>
+      <article class='panel span-12'><h2>Recent Pulses</h2><p class='muted'>No pulses yet.</p></article>
+    </section>
+  </main>
+</body>
+</html>
