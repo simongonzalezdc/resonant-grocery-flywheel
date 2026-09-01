@@ -9,7 +9,7 @@ cloud, no telemetry; nothing leaves your machine.
 ## Canonical links
 
 - This repo: https://github.com/simongonzalezdc/resonant-grocery-flywheel
-- Canonical upstream: https://github.com/simongonzalezdc/grocery-flywheel (MIT, HEAD 82da650 pinned)
+- Canonical upstream: https://github.com/simongonzalezdc/grocery-flywheel (MIT; vendored files sha256-pinned in VENDOR-PINS.json — the pin manifest is the source of truth, not a commit hash)
 
 ## Key facts
 
