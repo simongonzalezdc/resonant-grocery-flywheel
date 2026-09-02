@@ -66,6 +66,6 @@
     "method": "git archive 82da650 -- src/grocery_flywheel tests examples (committed tree; working-tree-local edits NOT vendored)",
     "name": "grocery-flywheel",
     "urls": [],
-    "vendor": "simongonzalezdecruz (origin: mac-mini local clone)"
+    "vendor": "KyaniteLabs"
   }
 }
