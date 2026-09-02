@@ -61,9 +61,9 @@
     "tests/test_wire_or_delete.py": "0fa571a1be83cfca9a2ea68f7de9911d0920542543fdfdcbcda550c4d739691f"
   },
   "upstream": {
-    "commit": "4b790756d921e448a63e3f61333406994d4151b3",
+    "commit": "70fb26b0c0276f15b95a6eda66b2a1d966d0e2be",
     "license": "MIT",
-    "method": "git archive 4b79075 -- src/grocery_flywheel tests examples (committed tree; working-tree-local edits NOT vendored; tests vendored minus test_quickstart.py which shells out to installed console scripts)",
+    "method": "git archive 70fb26b -- src/grocery_flywheel tests examples (committed tree; working-tree-local edits NOT vendored; tests vendored minus test_quickstart.py which shells out to installed console scripts)",
     "name": "grocery-flywheel",
     "urls": [
       "https://github.com/simongonzalezdc/grocery-flywheel",
