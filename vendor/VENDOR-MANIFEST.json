@@ -29,7 +29,7 @@
     "grocery_flywheel/render.py": "9a165a3fbd67162aa970cda896b4b3d9b699f54496c982f87e304a1d8664f9c3",
     "grocery_flywheel/rendering/__init__.py": "54946d5e8b0b7bde1ee7caa7099564ee24c139866798a861278ecd1f00e279d4",
     "grocery_flywheel/rendering/layout.py": "ec57f22e566ed92b5502f70cc4aaf452825bc34dd3b07d50b4452fdb01a34ed3",
-    "grocery_flywheel/rendering/panels.py": "98b7e4ed97f4ca75e81f3b72865314a117c52c46009010c8937fafe31ee2aa40",
+    "grocery_flywheel/rendering/panels.py": "6d31bbf88864895ef6f2e9996d21b897dcab4d5bf14befe3fd6cf253b2db6a8c",
     "grocery_flywheel/retailer_adapter.py": "a6d75c4eae2a401da5dd8fa3d9fd00dce6d46dffb8b6d9e2a1c86794da5d0b66",
     "grocery_flywheel/sourcing.py": "4233eca7763f3df0ebd44dab9060c03df55126fa26256d94a17f551fe3b5ec7f",
     "grocery_flywheel/state_io.py": "02f20ffe6ba3a2598eaa136638ab0e01b0e5de029ded631a51bf8d31fcfd0700",
@@ -50,7 +50,7 @@
     "tests/test_golden.py": "c7a6ad72263c176810ce82d0ca50f6bdfc80205d8b436d5aba74910d85a30fa0",
     "tests/test_harvest_brain.py": "f9c6feb9e25547b48e7081bad900f80ab55166f6552f889c9f52dc13a7244fac",
     "tests/test_harvest_contract.py": "c2aa28f16f8a0bc01237323262eb33ed199fe10779d27952059f0d09ee68c52d",
-    "tests/test_harvest_hands.py": "a6a0cc2d3d699aa188c44e9afa36987ee70479b704b1c8eca2a222fea64321de",
+    "tests/test_harvest_hands.py": "5246b52894d270e5c3fde338f277bce041a96ebe6a73a5f7347d9c9587598b34",
     "tests/test_importers.py": "18885376cc76902327476c93ea3abc1bf5d0f0a64e79dafc819cc1af380df492",
     "tests/test_low_severity_hardening.py": "94bdf0e5bb10a1c1a8aadc1c3961e33302569059409b1a83add4380e0d4df17e",
     "tests/test_mcp_protocol.py": "5bab82212698ecbe730cd9ed9ddd5408bed44fc6e8f0b1d48076d2d2fb027d06",
@@ -61,11 +61,14 @@
     "tests/test_wire_or_delete.py": "0fa571a1be83cfca9a2ea68f7de9911d0920542543fdfdcbcda550c4d739691f"
   },
   "upstream": {
-    "commit": "82da65047f47672d3d36a663c80b65d631028b25",
+    "commit": "4b790756d921e448a63e3f61333406994d4151b3",
     "license": "MIT",
-    "method": "git archive 82da650 -- src/grocery_flywheel tests examples (committed tree; working-tree-local edits NOT vendored)",
+    "method": "git archive 4b79075 -- src/grocery_flywheel tests examples (committed tree; working-tree-local edits NOT vendored; tests vendored minus test_quickstart.py which shells out to installed console scripts)",
     "name": "grocery-flywheel",
-    "urls": [],
+    "urls": [
+      "https://github.com/simongonzalezdc/grocery-flywheel",
+      "https://git.kyanitelabs.tech/simon/grocery-flywheel"
+    ],
     "vendor": "KyaniteLabs"
   }
 }
