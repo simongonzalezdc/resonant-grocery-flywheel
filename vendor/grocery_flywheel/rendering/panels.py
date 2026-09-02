@@ -319,7 +319,7 @@ def _pulses(a: dict[str, Any]) -> str:
     if not rows:
         return "<article class='panel span-12'><h2>Recent Pulses</h2><p class='muted'>No pulses yet.</p></article>"
     body = "".join(
-        # tolerant field access: some hand-edited states use 'note' (mac-mini fix, 2026-08-14)
+        # tolerant field access: some hand-edited states use 'note' (compat fix, 2026-08-14)
         f"<p><span class='tag'>{escape(r['date'])}</span>{escape(r.get('text', r.get('note', '')))}</p>"
         for r in rows[-5:]
     )
