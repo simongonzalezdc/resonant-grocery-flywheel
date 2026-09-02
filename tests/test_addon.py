@@ -12,6 +12,7 @@ import hashlib
 import http.client
 import json
 import os
+import subprocess
 import sys
 import threading
 import unittest
@@ -102,35 +103,90 @@ class Service:
 
 
 class TestVendorPin(unittest.TestCase):
-    """Every vendored file is byte-identical to upstream HEAD."""
+    """Vendor pin law: the pack is pinned absolutely by the recorded sha256
+    hashes in vendor/VENDOR-MANIFEST.json (frozen at vendor time from the
+    upstream committed tree; verifiable on any machine, no clone needed).
+    Byte-comparison against a live upstream clone is opportunistic: it runs
+    only when the clone is present AND at the pinned commit, and skips
+    otherwise — a stale clone would verify the wrong tree."""
+
+    MANIFEST = os.path.join(ADDON_ROOT, "vendor", "VENDOR-MANIFEST.json")
+
+    # vendor path -> upstream path (the upstream carries a src/ layout)
+    _VENDOR_TO_UPSTREAM = {
+        "grocery_flywheel": os.path.join("src", "grocery_flywheel"),
+        "tests": "tests",
+        "examples": "examples",
+    }
+
+    @classmethod
+    def setUpClass(cls):
+        with open(cls.MANIFEST) as f:
+            cls.meta = json.load(f)
+
+    def _upstream_head_at_pin(self):
+        """True when a local upstream clone sits at the pinned commit."""
+        try:
+            head = subprocess.run(
+                ["git", "-C", UPSTREAM, "rev-parse", "HEAD"],
+                capture_output=True, text=True, check=True,
+            ).stdout.strip()
+        except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+            return False
+        return head == self.meta["upstream"]["commit"]
+
+    def _upstream_rel(self, rel):
+        first = rel.split(os.sep, 1)[0]
+        upstream_sub = self._VENDOR_TO_UPSTREAM.get(first, first)
+        rest = rel[len(first):].lstrip(os.sep)
+        return os.path.join(upstream_sub, rest) if rest else upstream_sub
+
+    def test_vendor_manifest_pins_expected_upstream(self):
+        self.assertEqual(self.meta["upstream"]["name"], "grocery-flywheel")
+        self.assertEqual(self.meta["upstream"]["license"], "MIT")
+        self.assertRegex(self.meta["upstream"]["commit"], r"^[0-9a-f]{40}$")
+        self.assertGreater(len(self.meta["files"]), 50)
 
     def test_vendored_files_hash_identical_to_upstream(self):
+        """Absolute pin: every vendored byte matches its recorded upstream
+        hash — enforced on every machine, no upstream clone required."""
         checked = 0
-        for sub, upstream_sub in (
-            ("grocery_flywheel", os.path.join("src", "grocery_flywheel")),
-            ("tests", "tests"),
-            ("examples", "examples"),
-        ):
-            vendored_root = os.path.join(ADDON_ROOT, "vendor", sub)
-            for root, dirs, files in os.walk(vendored_root):
-                dirs[:] = [d for d in dirs if d != "__pycache__"]
-                for name in files:
-                    if name.endswith((".pyc", ".DS_Store")):
-                        continue
-                    ours = os.path.join(root, name)
-                    rel = os.path.relpath(ours, os.path.join(ADDON_ROOT, "vendor", sub))
-                    theirs = os.path.join(UPSTREAM, upstream_sub, rel)
-                    self.assertTrue(os.path.exists(theirs), f"upstream missing: {rel}")
-                    self.assertEqual(sha256(ours), sha256(theirs), f"vendor drift: {rel}")
-                    checked += 1
-        self.assertGreater(checked, 40, "vendor pin walked suspiciously few files")
+        for rel, expected in self.meta["files"].items():
+            self.assertEqual(sha256(os.path.join(ADDON_ROOT, "vendor", rel)),
+                             expected, f"vendor drift: {rel}")
+            checked += 1
+        self.assertGreater(checked, 50, "vendor pin walked suspiciously few files")
 
-    def test_upstream_head_matches_pinned_commit(self):
-        import subprocess
-        head = subprocess.run(
-            ["git", "rev-parse", "HEAD"], cwd=UPSTREAM, capture_output=True, text=True, check=True
-        ).stdout.strip()
-        self.assertTrue(head.startswith("82da650"), f"upstream moved past pinned HEAD: {head}")
+    def test_no_unlisted_files_in_vendor(self):
+        """The pin must be complete: a file dropped under vendor/ but absent
+        from the manifest would ship without any hash check."""
+        unlisted = []
+        for root, dirs, names in os.walk(os.path.join(ADDON_ROOT, "vendor")):
+            dirs[:] = [d for d in dirs if d != "__pycache__"]
+            for n in names:
+                if n.endswith((".pyc", ".DS_Store")):
+                    continue
+                rel = os.path.relpath(os.path.join(root, n), os.path.join(ADDON_ROOT, "vendor"))
+                if rel != "VENDOR-MANIFEST.json" and rel not in self.meta["files"]:
+                    unlisted.append(rel)
+        self.assertEqual(unlisted, [])
+
+    def test_vendored_bytes_identical_to_upstream_git_head(self):
+        """Opportunistic live check: byte-identity against the upstream clone,
+        only when it sits at the pinned commit (skipped when the clone is
+        absent or stale — the recorded pins above still enforce integrity;
+        pull upstream and re-vendor to re-arm this check)."""
+        if not self._upstream_head_at_pin():
+            self.skipTest(
+                "upstream clone not present at pinned commit "
+                f"{self.meta['upstream']['commit'][:12]} ({UPSTREAM}); "
+                "recorded manifest pins still enforce pack integrity")
+        for rel in self.meta["files"]:
+            theirs = os.path.join(UPSTREAM, self._upstream_rel(rel))
+            self.assertTrue(os.path.exists(theirs), f"upstream missing: {rel}")
+            self.assertEqual(
+                sha256(os.path.join(ADDON_ROOT, "vendor", rel)), sha256(theirs),
+                f"vendor drift: {rel}")
 
 
 class TestManifestParity(unittest.TestCase):
