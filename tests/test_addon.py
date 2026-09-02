@@ -346,8 +346,12 @@ class TestAdversarialMatrix(unittest.TestCase):
             state_json = json.dumps(make_state()) + " " + ("x" * (server.MAX_BODY + 1024))
             raw = json.dumps({"method": "groceryflywheel.analyze", "params": {"state_json": state_json}}).encode()
             self.assertGreater(len(raw), server.MAX_BODY)
-            code, _ = post_err(None, raw=raw)
-            self.assertEqual(code, 413)
+            try:
+                post(None, raw=raw)
+                self.fail("oversized body must not succeed")
+            except urllib.error.HTTPError as exc:
+                self.assertEqual(exc.code, 413)
+                self.assertEqual(exc.headers.get("Connection"), "close")  # advertised, not silent (gifts#4)
 
     def test_7_malformed_requests_400(self):
         with Service():
