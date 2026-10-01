@@ -80,7 +80,7 @@ def test_pulses_tolerate_note_field():
     state = _legacy()
     state["pulses"] = [{"date": "2026-06-05", "note": "hand-edited pulse"}]
     html = render_dashboard(analyze_state(state))
-    assert "hand-edited pulse" in html  # mac-mini fix: row['text'] → .get(text, note)
+    assert "hand-edited pulse" in html  # compat fix: row["text"] → .get(text, note)
 
 
 def test_first_wow_cards_render():
