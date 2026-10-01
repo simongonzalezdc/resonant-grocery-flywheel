@@ -1,0 +1,72 @@
+[
+  {
+    "id": "generic.browser_retailer",
+    "name": "Generic Browser Retailer",
+    "type": "grocery",
+    "region": "US",
+    "channels": ["pickup", "delivery", "in_person"],
+    "acquisition_methods": ["retailer_history_import", "browser_assisted"],
+    "capabilities": {
+      "purchase_history": true,
+      "product_search": true,
+      "price_lookup": true,
+      "unit_price": true,
+      "availability": true,
+      "substitutions": true,
+      "cart_draft": true,
+      "order_submit": false
+    },
+    "constraints": ["login_required", "location_specific_prices"],
+    "provenance": {
+      "history_source": "account",
+      "price_source": "browser"
+    }
+  },
+  {
+    "id": "generic.local_market",
+    "name": "Generic Local Market",
+    "type": "local_market",
+    "region": "custom",
+    "channels": ["in_person"],
+    "acquisition_methods": ["receipt_import", "photo_assisted", "manual_inventory"],
+    "capabilities": {
+      "purchase_history": false,
+      "product_search": false,
+      "price_lookup": false,
+      "unit_price": false,
+      "availability": false,
+      "substitutions": false,
+      "cart_draft": false,
+      "order_submit": false
+    },
+    "constraints": ["receipt_or_manual_required"],
+    "provenance": {
+      "history_source": "user_supplied",
+      "price_source": "receipt"
+    }
+  },
+  {
+    "id": "generic.warehouse_or_online",
+    "name": "Generic Warehouse Or Online Retailer",
+    "type": "warehouse_or_online",
+    "region": "US",
+    "channels": ["delivery", "shipping", "in_person"],
+    "acquisition_methods": ["retailer_history_import", "product_search"],
+    "capabilities": {
+      "purchase_history": true,
+      "product_search": true,
+      "price_lookup": true,
+      "unit_price": true,
+      "availability": true,
+      "substitutions": true,
+      "cart_draft": false,
+      "order_submit": false
+    },
+    "constraints": ["membership_or_shipping_possible", "bulk_storage_required"],
+    "provenance": {
+      "history_source": "account_or_export",
+      "price_source": "web"
+    }
+  }
+]
+
